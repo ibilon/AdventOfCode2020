@@ -1,0 +1,5 @@
+[package]
+name = "adventofcode2020"
+version = "0.1.0"
+authors = ["Valentin Lemière <valentin@ibilon.com>"]
+edition = "2018"

@@ -1,0 +1,16 @@
+{
+	"[rust]": {
+		"editor.formatOnSave": true
+	},
+	"editor.semanticTokenColorCustomizations": {
+		"[Default Light+]": {
+			"enabled": true,
+			"rules": {
+				"*.mutable": {
+					"underline": false
+				}
+			}
+		}
+	},
+	"task.autoDetect": "off"
+}
