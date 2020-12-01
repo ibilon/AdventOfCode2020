@@ -1,4 +1,6 @@
 pub fn run() -> () {
+	println!("=== Day 01 ===");
+
 	let answer1 = part1().expect("Couldn't compute part 1");
 	println!("Part1: {}", answer1);
 
