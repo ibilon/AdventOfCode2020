@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-pub fn run() -> () {
+pub fn run() {
 	println!("=== Day 04 ===");
 
 	let answer1 = part1();
@@ -53,7 +53,6 @@ fn part2() -> i32 {
 	let mut valid = 0;
 
 	for passport in data.iter() {
-
 		if let Some(byr) = passport.get("byr") {
 			if let Ok(byr) = byr.parse::<i32>() {
 				if byr < 1920 || byr > 2002 {
@@ -149,7 +148,7 @@ fn part2() -> i32 {
 		} else {
 			continue;
 		}
-		
+
 		valid += 1;
 	}
 

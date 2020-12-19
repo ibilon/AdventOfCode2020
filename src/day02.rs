@@ -1,4 +1,4 @@
-pub fn run() -> () {
+pub fn run() {
 	println!("=== Day 02 ===");
 
 	let answer1 = part1();
@@ -18,11 +18,11 @@ struct Data {
 fn get_data() -> Vec<Data> {
 	std::fs::read_to_string("data/day02.txt")
 		.expect("Couldn't read data file")
-		.split("\n")
+		.split('\n')
 		.map(|e| {
-			let c = e.split(" ").collect::<Vec<&str>>();
+			let c = e.split(' ').collect::<Vec<&str>>();
 			let range = c[0]
-				.split("-")
+				.split('-')
 				.map(|e| e.parse::<usize>().expect("Not a number"))
 				.collect::<Vec<usize>>();
 

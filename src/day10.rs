@@ -1,4 +1,4 @@
-pub fn run() -> () {
+pub fn run() {
 	println!("=== Day 10 ===");
 
 	let answer1 = part1();
@@ -11,11 +11,11 @@ pub fn run() -> () {
 fn get_data() -> Vec<i32> {
 	let mut data = std::fs::read_to_string("data/day10.txt")
 		.expect("Couldn't read data file")
-		.split("\n")
+		.split('\n')
 		.map(|row| row.parse().expect("Not a number"))
 		.collect::<Vec<_>>();
 	data.push(0);
-	data.sort();
+	data.sort_unstable();
 	data.push(data.last().expect("Empty list") + 3);
 	data
 }

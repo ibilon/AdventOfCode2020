@@ -1,4 +1,4 @@
-pub fn run() -> () {
+pub fn run() {
 	println!("=== Day 03 ===");
 
 	let answer1 = part1();
@@ -11,7 +11,7 @@ pub fn run() -> () {
 fn get_data() -> Vec<Vec<bool>> {
 	std::fs::read_to_string("data/day03.txt")
 		.expect("Couldn't read data file")
-		.split("\n")
+		.split('\n')
 		.map(|row| row.chars().map(|c| c == '#').collect())
 		.collect()
 }
@@ -38,11 +38,11 @@ fn part1() -> i32 {
 }
 
 fn part2() -> i64 {
-	let a = count_trees(1, 1) as i64;
-	let b = count_trees(3, 1) as i64;
-	let c = count_trees(5, 1) as i64;
-	let d = count_trees(7, 1) as i64;
-	let e = count_trees(1, 2) as i64;
+	let count1 = count_trees(1, 1) as i64;
+	let count2 = count_trees(3, 1) as i64;
+	let count3 = count_trees(5, 1) as i64;
+	let count4 = count_trees(7, 1) as i64;
+	let count5 = count_trees(1, 2) as i64;
 
-	a * b * c * d * e
+	count1 * count2 * count3 * count4 * count5
 }

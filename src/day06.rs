@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-pub fn run() -> () {
+pub fn run() {
 	println!("=== Day 06 ===");
 
 	let answer1 = part1();
@@ -16,7 +16,7 @@ fn get_data() -> Vec<(usize, HashMap<char, usize>)> {
 		.split("\n\n")
 		.map(|group| {
 			let group = group
-				.split("\n")
+				.split('\n')
 				.map(|row| row.chars().collect())
 				.collect::<Vec<Vec<char>>>();
 			let mut questions = HashMap::new();

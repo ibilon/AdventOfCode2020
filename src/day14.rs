@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-pub fn run() -> () {
+pub fn run() {
 	println!("=== Day 14 ===");
 
 	let answer1 = part1();
@@ -18,12 +18,12 @@ enum Instruction {
 fn get_data() -> Vec<Instruction> {
 	std::fs::read_to_string("data/day14.txt")
 		.expect("Couldn't read data file")
-		.split("\n")
+		.split('\n')
 		.map(|row| {
-			if row.starts_with("mask = ") {
-				Instruction::Mask(String::from(&row[7..]))
+			if let Some(end) = row.strip_prefix("mask = ") {
+				Instruction::Mask(String::from(end))
 			} else {
-				let i = row.find("]").expect("Wrong format");
+				let i = row.find(']').expect("Wrong format");
 				Instruction::Write(
 					row[4..i].parse().expect("Not a number"),
 					row[i + 4..].parse().expect("Not a number"),
@@ -63,25 +63,22 @@ fn part1() -> u64 {
 
 fn set_memory_mult(
 	memory: &mut HashMap<u64, u64>,
-	mask: &String,
+	mask: &str,
 	start: usize,
 	index: u64,
 	value: u64,
-) -> () {
+) {
 	for (i, c) in mask.char_indices().skip(start) {
-		match c {
-			'X' => {
-				set_memory_mult(memory, mask, i + 1, index | (1 << (36 - i - 1)), value);
-				set_memory_mult(
-					memory,
-					mask,
-					i + 1,
-					index & (!0 - (1 << (36 - i - 1))),
-					value,
-				);
-				return;
-			}
-			_ => (),
+		if c == 'X' {
+			set_memory_mult(memory, mask, i + 1, index | (1 << (36 - i - 1)), value);
+			set_memory_mult(
+				memory,
+				mask,
+				i + 1,
+				index & (!0 - (1 << (36 - i - 1))),
+				value,
+			);
+			return;
 		}
 	}
 
@@ -98,9 +95,8 @@ fn part2() -> u64 {
 
 			Instruction::Write(mut index, value) => {
 				for (i, c) in mask.char_indices() {
-					match c {
-						'1' => index |= 1 << (36 - i - 1),
-						_ => (),
+					if c == '1' {
+						index |= 1 << (36 - i - 1)
 					}
 				}
 

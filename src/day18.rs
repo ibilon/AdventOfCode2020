@@ -1,4 +1,4 @@
-pub fn run() -> () {
+pub fn run() {
 	println!("=== Day 18 ===");
 
 	let answer1 = part1();
@@ -97,7 +97,7 @@ impl Parser {
 		self.chars[self.index]
 	}
 
-	fn require(&mut self, c: char) -> () {
+	fn require(&mut self, c: char) {
 		if self.peek() != c {
 			panic!(format!("Expected {} but found {}", c, self.peek()));
 		}
@@ -115,7 +115,7 @@ enum Expr {
 fn get_data(precedence: bool) -> Vec<Expr> {
 	std::fs::read_to_string("data/day18.txt")
 		.expect("Couldn't read data file")
-		.split("\n")
+		.split('\n')
 		.map(|row| {
 			Parser {
 				chars: row.chars().filter(|c| !c.is_ascii_whitespace()).collect(),
@@ -136,15 +136,9 @@ fn eval(expr: &Expr) -> u64 {
 }
 
 fn part1() -> u64 {
-	get_data(false)
-		.iter()
-		.map(|expr| eval(expr))
-		.fold(0, |acc, x| acc + x)
+	get_data(false).iter().map(eval).sum()
 }
 
 fn part2() -> u64 {
-	get_data(true)
-		.iter()
-		.map(|expr| eval(expr))
-		.fold(0, |acc, x| acc + x)
+	get_data(true).iter().map(eval).sum()
 }

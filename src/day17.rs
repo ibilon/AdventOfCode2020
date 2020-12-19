@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-pub fn run() -> () {
+pub fn run() {
 	println!("=== Day 17 ===");
 
 	let answer1 = part1();
@@ -10,44 +10,54 @@ pub fn run() -> () {
 	println!("Part2: {}", answer2);
 }
 
-fn get_data() -> (HashMap<(i32, i32, i32, i32), bool>, (i32, i32), (i32, i32)) {
-	let mut data = HashMap::new();
+struct EnergySource {
+	pub cubes: HashMap<(i32, i32, i32, i32), bool>,
+	pub range_x: (i32, i32),
+	pub range_y: (i32, i32),
+}
+
+fn get_data() -> EnergySource {
+	let mut cubes = HashMap::new();
 	let mut max_x = 0;
 	let mut max_y = 0;
 
 	for (y, row) in std::fs::read_to_string("data/day17.txt")
 		.expect("Couldn't read data file")
-		.split("\n")
+		.split('\n')
 		.enumerate()
 	{
 		max_y = y as i32;
 
 		for (x, value) in row.chars().enumerate() {
 			max_x = x as i32;
-			data.insert((x as i32, y as i32, 0, 0), value == '#');
+			cubes.insert((x as i32, y as i32, 0, 0), value == '#');
 		}
 	}
 
-	(data, (0, max_x + 1), (0, max_y + 1))
+	EnergySource {
+		cubes,
+		range_x: (0, max_x + 1),
+		range_y: (0, max_y + 1),
+	}
 }
 
-fn print_layer(data: &Vec<Vec<bool>>) -> () {
+fn print_layer(data: &[Vec<bool>]) {
 	for row in data.iter() {
 		for column in row.iter() {
 			print!("{}", if *column { '#' } else { '.' });
 		}
-		println!("");
+		println!();
 	}
 }
 
 fn part1() -> i32 {
-	let (mut data, range_x, range_y) = get_data();
+	let mut data = get_data();
 
 	for i in 0..6 {
 		let mut new_data = HashMap::new();
 
-		for x in range_x.0 - 1 - i..range_x.1 + 1 + i {
-			for y in range_y.0 - 1 - i..range_y.1 + 1 + i {
+		for x in data.range_x.0 - 1 - i..data.range_x.1 + 1 + i {
+			for y in data.range_y.0 - 1 - i..data.range_y.1 + 1 + i {
 				for z in -1 - i..2 + i {
 					let mut neighbors = 0;
 
@@ -58,14 +68,18 @@ fn part1() -> i32 {
 									continue;
 								}
 
-								if *data.entry((x + xx, y + yy, z + zz, 0)).or_insert(false) {
+								if *data
+									.cubes
+									.entry((x + xx, y + yy, z + zz, 0))
+									.or_insert(false)
+								{
 									neighbors += 1;
 								}
 							}
 						}
 					}
 
-					let cube = *data.entry((x, y, z, 0)).or_insert(false);
+					let cube = *data.cubes.entry((x, y, z, 0)).or_insert(false);
 
 					new_data.insert(
 						(x, y, z, 0),
@@ -82,13 +96,13 @@ fn part1() -> i32 {
 		}
 
 		for (key, value) in new_data {
-			data.insert(key, value);
+			data.cubes.insert(key, value);
 		}
 	}
 
 	let mut count = 0;
 
-	for (_, value) in data {
+	for (_, value) in data.cubes {
 		if value {
 			count += 1;
 		}
@@ -98,13 +112,13 @@ fn part1() -> i32 {
 }
 
 fn part2() -> i32 {
-	let (mut data, range_x, range_y) = get_data();
+	let mut data = get_data();
 
 	for i in 0..6 {
 		let mut new_data = HashMap::new();
 
-		for x in range_x.0 - 1 - i..range_x.1 + 1 + i {
-			for y in range_y.0 - 1 - i..range_y.1 + 1 + i {
+		for x in data.range_x.0 - 1 - i..data.range_x.1 + 1 + i {
+			for y in data.range_y.0 - 1 - i..data.range_y.1 + 1 + i {
 				for z in -1 - i..2 + i {
 					for w in -1 - i..2 + i {
 						let mut neighbors = 0;
@@ -118,6 +132,7 @@ fn part2() -> i32 {
 										}
 
 										if *data
+											.cubes
 											.entry((x + xx, y + yy, z + zz, w + ww))
 											.or_insert(false)
 										{
@@ -128,7 +143,7 @@ fn part2() -> i32 {
 							}
 						}
 
-						let cube = *data.entry((x, y, z, w)).or_insert(false);
+						let cube = *data.cubes.entry((x, y, z, w)).or_insert(false);
 
 						new_data.insert(
 							(x, y, z, w),
@@ -146,13 +161,13 @@ fn part2() -> i32 {
 		}
 
 		for (key, value) in new_data {
-			data.insert(key, value);
+			data.cubes.insert(key, value);
 		}
 	}
 
 	let mut count = 0;
 
-	for (_, value) in data {
+	for (_, value) in data.cubes {
 		if value {
 			count += 1;
 		}

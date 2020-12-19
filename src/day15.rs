@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-pub fn run() -> () {
+pub fn run() {
 	println!("=== Day 15 ===");
 
 	let answer1 = part1();
@@ -21,7 +21,7 @@ fn part2() -> i32 {
 fn get_data() -> Vec<i32> {
 	std::fs::read_to_string("data/day15.txt")
 		.expect("Couldn't read data file")
-		.split("\n")
+		.split('\n')
 		.map(|row| row.parse().expect("Not a number"))
 		.collect()
 }

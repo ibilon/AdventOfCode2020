@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 static SHINY_GOLD: &str = "shiny gold";
 
-pub fn run() -> () {
+pub fn run() {
 	println!("=== Day 07 ===");
 
 	let answer1 = part1();
@@ -17,7 +17,7 @@ fn get_data() -> HashMap<String, Vec<(i32, String)>> {
 
 	for row in std::fs::read_to_string("data/day07.txt")
 		.expect("Couldn't read data file")
-		.split("\n")
+		.split('\n')
 	{
 		let row = row.split(" contain ").collect::<Vec<&str>>();
 		let key = String::from(&row[0][..row[0].len() - 5]);
@@ -28,7 +28,7 @@ fn get_data() -> HashMap<String, Vec<(i32, String)>> {
 			let value = row[1][..row[1].len() - 1]
 				.split(", ")
 				.map(|s| {
-					let mut s = s.split(" ").collect::<Vec<&str>>();
+					let mut s = s.split(' ').collect::<Vec<&str>>();
 					let count = s.drain(0..1).collect::<Vec<&str>>()[0]
 						.parse::<i32>()
 						.expect("Wrong number");
@@ -43,10 +43,10 @@ fn get_data() -> HashMap<String, Vec<(i32, String)>> {
 	data
 }
 
-fn contains_shiny_gold(data: &HashMap<String, Vec<(i32, String)>>, color: &String) -> bool {
+fn contains_shiny_gold(data: &HashMap<String, Vec<(i32, String)>>, color: &str) -> bool {
 	let sub = data.get(color).expect("Wrong color");
 
-	if sub.iter().find(|(_, color)| *color == SHINY_GOLD).is_some() {
+	if sub.iter().any(|(_, color)| *color == SHINY_GOLD) {
 		return true;
 	} else {
 		for (_, sub_color) in sub {

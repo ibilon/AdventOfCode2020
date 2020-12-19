@@ -1,4 +1,4 @@
-pub fn run() -> () {
+pub fn run() {
 	println!("=== Day 12 ===");
 
 	let answer1 = part1();
@@ -22,7 +22,7 @@ enum Action {
 fn get_data() -> Vec<(Action, i32)> {
 	std::fs::read_to_string("data/day12.txt")
 		.expect("Couldn't read data file")
-		.split("\n")
+		.split('\n')
 		.map(|row| {
 			let value = row
 				.chars()
@@ -32,7 +32,7 @@ fn get_data() -> Vec<(Action, i32)> {
 				.unwrap();
 
 			(
-				match row.chars().nth(0).unwrap() {
+				match row.chars().next().unwrap() {
 					'N' => Action::North,
 					'S' => Action::South,
 					'E' => Action::East,

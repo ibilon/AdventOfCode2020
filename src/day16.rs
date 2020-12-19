@@ -1,4 +1,4 @@
-pub fn run() -> () {
+pub fn run() {
 	println!("=== Day 16 ===");
 
 	let answer1 = part1();
@@ -8,8 +8,14 @@ pub fn run() -> () {
 	println!("Part2: {}", answer2);
 }
 
+struct Field {
+	pub name: String,
+	pub range1: (i32, i32),
+	pub range2: (i32, i32),
+}
+
 struct Data {
-	pub fields: Vec<(String, (i32, i32), (i32, i32))>,
+	pub fields: Vec<Field>,
 	pub ticket: Vec<i32>,
 	pub nearby_tickets: Vec<Vec<i32>>,
 }
@@ -18,43 +24,43 @@ fn get_data() -> Data {
 	let data = std::fs::read_to_string("data/day16.txt")
 		.expect("Couldn't read data file")
 		.split("\n\n")
-		.map(|row| String::from(row))
+		.map(String::from)
 		.collect::<Vec<_>>();
 
 	let fields = data[0]
-		.split("\n")
+		.split('\n')
 		.map(|row| {
-			let p0 = row.find(":").expect("Wrong format");
+			let p0 = row.find(':').expect("Wrong format");
 			let p1 = row.find(" or").expect("Wrong format");
-			let p2 = row.find("-").expect("Wrong format");
+			let p2 = row.find('-').expect("Wrong format");
 			let s = &row[p1 + 4..];
-			let p3 = s.find("-").expect("Wrong format");
+			let p3 = s.find('-').expect("Wrong format");
 
-			(
-				String::from(&row[..p0]),
-				(
+			Field {
+				name: String::from(&row[..p0]),
+				range1: (
 					(&row[p0 + 2..p2]).parse().expect("Not a number"),
 					(&row[p2 + 1..p1]).parse().expect("Not a number"),
 				),
-				(
+				range2: (
 					(&s[..p3]).parse().expect("Not a number"),
 					(&s[p3 + 1..]).parse().expect("Not a number"),
 				),
-			)
+			}
 		})
 		.collect();
 
 	let p = data[1].find(":\n").expect("Wrong format");
 	let ticket = (&data[1][p + 2..])
-		.split(",")
+		.split(',')
 		.map(|elem| elem.parse().expect("Not a number"))
 		.collect();
 
 	let nearby_tickets = data[2]
-		.split("\n")
+		.split('\n')
 		.skip(1)
 		.map(|row| {
-			row.split(",")
+			row.split(',')
 				.map(|elem| elem.parse().expect("Not a number"))
 				.collect()
 		})
@@ -76,8 +82,8 @@ fn part1() -> i32 {
 			let mut valid = false;
 
 			for field in data.fields.iter() {
-				if (*value >= field.1 .0 && *value <= field.1 .1)
-					|| (*value >= field.2 .0 && *value <= field.2 .1)
+				if (*value >= field.range1.0 && *value <= field.range1.1)
+					|| (*value >= field.range2.0 && *value <= field.range2.1)
 				{
 					valid = true;
 					break;
@@ -95,8 +101,8 @@ fn part1() -> i32 {
 
 fn remove_vec(data: &mut Vec<usize>, value: usize) -> bool {
 	let mut index = -1;
-	for i in 0..data.len() {
-		if data[i] == value {
+	for (i, v) in data.iter().enumerate() {
+		if *v == value {
 			index = i as i32;
 			break;
 		}
@@ -126,8 +132,8 @@ fn part2() -> i64 {
 			let mut valid = false;
 
 			for field in data.fields.iter() {
-				if (*value >= field.1 .0 && *value <= field.1 .1)
-					|| (*value >= field.2 .0 && *value <= field.2 .1)
+				if (*value >= field.range1.0 && *value <= field.range1.1)
+					|| (*value >= field.range2.0 && *value <= field.range2.1)
 				{
 					valid = true;
 					break;
@@ -143,8 +149,8 @@ fn part2() -> i64 {
 		if valid_ticket {
 			for (i, value) in ticket.iter().enumerate() {
 				for (j, field) in data.fields.iter().enumerate() {
-					if !((*value >= field.1 .0 && *value <= field.1 .1)
-						|| (*value >= field.2 .0 && *value <= field.2 .1))
+					if !((*value >= field.range1.0 && *value <= field.range1.1)
+						|| (*value >= field.range2.0 && *value <= field.range2.1))
 					{
 						remove_vec(&mut possibilities[i], j);
 
@@ -154,12 +160,12 @@ fn part2() -> i64 {
 							for n in 0..possibilities.len() {
 								if possibilities[n].len() == 1 {
 									let value = possibilities[n][0];
-									for p in 0..possibilities.len() {
+									for (p, pp) in possibilities.iter_mut().enumerate() {
 										if p == n {
 											continue;
 										}
 
-										if remove_vec(&mut possibilities[p], value) {
+										if remove_vec(pp, value) {
 											did_remove = true;
 										}
 									}

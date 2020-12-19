@@ -1,4 +1,4 @@
-pub fn run() -> () {
+pub fn run() {
 	println!("=== Day 13 ===");
 
 	let answer1 = part1();
@@ -11,14 +11,14 @@ pub fn run() -> () {
 fn get_data() -> (i32, Vec<(usize, i32)>) {
 	let data = std::fs::read_to_string("data/day13.txt")
 		.expect("Couldn't read data file")
-		.split("\n")
-		.map(|row| String::from(row))
+		.split('\n')
+		.map(String::from)
 		.collect::<Vec<_>>();
 
 	(
 		data[0].parse().expect("Not a number"),
 		data[1]
-			.split(",")
+			.split(',')
 			.enumerate()
 			.filter(|e| e.1 != "x")
 			.map(|e| (e.0, e.1.parse().expect("Not a number")))

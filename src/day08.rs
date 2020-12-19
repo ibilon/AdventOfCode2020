@@ -1,4 +1,4 @@
-pub fn run() -> () {
+pub fn run() {
 	println!("=== Day 08 ===");
 
 	let answer1 = part1();
@@ -18,9 +18,9 @@ enum InstructionType {
 fn get_data() -> Vec<(InstructionType, i32)> {
 	std::fs::read_to_string("data/day08.txt")
 		.expect("Couldn't read data file")
-		.split("\n")
+		.split('\n')
 		.map(|row| {
-			let row = row.split(" ").collect::<Vec<&str>>();
+			let row = row.split(' ').collect::<Vec<&str>>();
 			(
 				match row[0] {
 					"nop" => InstructionType::Nop,
@@ -34,7 +34,7 @@ fn get_data() -> Vec<(InstructionType, i32)> {
 		.collect()
 }
 
-fn eval(data: &Vec<(InstructionType, i32)>) -> Result<i32, i32> {
+fn eval(data: &[(InstructionType, i32)]) -> Result<i32, i32> {
 	let mut data = data
 		.iter()
 		.map(|i| (false, i.0, i.1))

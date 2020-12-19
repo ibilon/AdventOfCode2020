@@ -1,4 +1,4 @@
-pub fn run() -> () {
+pub fn run() {
 	println!("=== Day 01 ===");
 
 	let answer1 = part1().expect("Couldn't compute part 1");
@@ -11,7 +11,7 @@ pub fn run() -> () {
 fn get_data() -> Vec<i32> {
 	std::fs::read_to_string("data/day01.txt")
 		.expect("Couldn't read data file")
-		.split("\n")
+		.split('\n')
 		.map(|e| e.parse::<i32>().expect("Not a number"))
 		.collect()
 }

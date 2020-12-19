@@ -1,6 +1,6 @@
 use std::cmp::{max, min};
 
-pub fn run() -> () {
+pub fn run() {
 	println!("=== Day 09 ===");
 
 	let answer1 = part1().expect("Couldn't compute part 1");
@@ -13,7 +13,7 @@ pub fn run() -> () {
 fn get_data() -> Vec<i64> {
 	std::fs::read_to_string("data/day09.txt")
 		.expect("Couldn't read data file")
-		.split("\n")
+		.split('\n')
 		.map(|row| row.parse().expect("Invalid number"))
 		.collect()
 }
@@ -42,7 +42,7 @@ fn part1() -> Result<i64, ()> {
 	Err(())
 }
 
-fn part2(target:i64) -> Result<i64, ()> {
+fn part2(target: i64) -> Result<i64, ()> {
 	let data = get_data();
 
 	for i in 0..data.len() {

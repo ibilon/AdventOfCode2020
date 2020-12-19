@@ -1,6 +1,6 @@
-use std::{collections::HashSet, cmp::max};
+use std::{cmp::max, collections::HashSet};
 
-pub fn run() -> () {
+pub fn run() {
 	println!("=== Day 05 ===");
 
 	let answer1 = part1();
@@ -13,7 +13,7 @@ pub fn run() -> () {
 fn get_data() -> Vec<(Vec<bool>, Vec<bool>)> {
 	std::fs::read_to_string("data/day05.txt")
 		.expect("Couldn't read data file")
-		.split("\n")
+		.split('\n')
 		.map(|row| {
 			let mut chars = row.chars();
 			(
@@ -24,7 +24,7 @@ fn get_data() -> Vec<(Vec<bool>, Vec<bool>)> {
 		.collect()
 }
 
-fn bsp(p:Vec<bool>, mut min:i32, mut max:i32) -> i32 {
+fn bsp(p: Vec<bool>, mut min: i32, mut max: i32) -> i32 {
 	for e in p {
 		let half = (max - min + 1) / 2;
 

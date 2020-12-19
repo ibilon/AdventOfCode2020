@@ -1,6 +1,6 @@
 use std::cmp::min;
 
-pub fn run() -> () {
+pub fn run() {
 	println!("=== Day 11 ===");
 
 	let answer1 = part1();
@@ -68,7 +68,7 @@ enum Seat {
 fn get_data() -> Vec<Vec<Seat>> {
 	std::fs::read_to_string("data/day11.txt")
 		.expect("Couldn't read data file")
-		.split("\n")
+		.split('\n')
 		.map(|row| {
 			row.chars()
 				.map(|c| match c {
@@ -89,10 +89,7 @@ fn eval(adjacent: fn(data: &Vec<Vec<Seat>>, x: i32, y: i32) -> i32, required: i3
 
 	loop {
 		let mut changes = 0;
-		let mut new_data = data
-			.iter()
-			.map(|row| row.clone())
-			.collect::<Vec<Vec<Seat>>>();
+		let mut new_data = data.to_vec();
 
 		for y in 0..height {
 			for x in 0..width {
@@ -126,7 +123,7 @@ fn eval(adjacent: fn(data: &Vec<Vec<Seat>>, x: i32, y: i32) -> i32, required: i3
 	count_occupied(&data)
 }
 
-fn count_occupied(data: &Vec<Vec<Seat>>) -> i32 {
+fn count_occupied(data: &[Vec<Seat>]) -> i32 {
 	let mut count = 0;
 
 	for row in data {
@@ -140,7 +137,7 @@ fn count_occupied(data: &Vec<Vec<Seat>>) -> i32 {
 	count
 }
 
-fn dir_has_seat_occupied(data: &Vec<Vec<Seat>>, start: (i32, i32), step: (i32, i32)) -> bool {
+fn dir_has_seat_occupied(data: &[Vec<Seat>], start: (i32, i32), step: (i32, i32)) -> bool {
 	let height = data.len() as i32;
 	let width = data[0].len() as i32;
 
