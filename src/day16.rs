@@ -1,3 +1,5 @@
+use crate::utils::remove_vec;
+
 pub fn run() {
 	println!("=== Day 16 ===");
 
@@ -99,23 +101,6 @@ fn part1() -> i32 {
 	error_rate
 }
 
-fn remove_vec(data: &mut Vec<usize>, value: usize) -> bool {
-	let mut index = -1;
-	for (i, v) in data.iter().enumerate() {
-		if *v == value {
-			index = i as i32;
-			break;
-		}
-	}
-
-	if index != -1 {
-		data.remove(index as usize);
-		true
-	} else {
-		false
-	}
-}
-
 fn part2() -> i64 {
 	let data = get_data();
 
@@ -152,7 +137,7 @@ fn part2() -> i64 {
 					if !((*value >= field.range1.0 && *value <= field.range1.1)
 						|| (*value >= field.range2.0 && *value <= field.range2.1))
 					{
-						remove_vec(&mut possibilities[i], j);
+						remove_vec(&mut possibilities[i], &j);
 
 						loop {
 							let mut did_remove = false;
@@ -165,7 +150,7 @@ fn part2() -> i64 {
 											continue;
 										}
 
-										if remove_vec(pp, value) {
+										if remove_vec(pp, &value) {
 											did_remove = true;
 										}
 									}
