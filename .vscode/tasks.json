@@ -6,7 +6,8 @@
 			"command": "time",
 			"args": [
 				"cargo",
-				"run"
+				"run",
+				"--quiet"
 			],
 			"problemMatcher": [
 				"$rustc"
